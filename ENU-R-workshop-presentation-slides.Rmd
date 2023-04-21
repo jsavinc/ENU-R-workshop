@@ -1,0 +1,50 @@
+---
+title: "ENU R Workshop - presentation slides"
+author: "Michelle Jamieson & Jan Savinc"
+date: "`r Sys.Date()`"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Contents/outline/TODO list
+
+The presentation should cover the following:
+
+- installing/loading packages
+	- session, environment, restarting session
+- setting up project & folder
+	- absolute vs relative path
+	- project skeleton
+- read in excel file
+	- excel_sheets()
+	- read_excel()
+- data.frames/tibbles
+	- what they are
+	- accessing values/rows/columns/indexing
+	- saving as .csv/.xlsx (openxlsx::write.xlsx)
+- cleaning
+	- janitor::clean_names()
+	- various ways of renaming data
+	- naming conventions
+	- checking data
+		- summary, glimpse(), skimr::skim(), range()
+		- count(is.na(x)), count()
+	- converting to NA - if_else(), replace()
+	- recoding - replace some values with others
+	- type conversions
+	- working with dates, lubridate
+- descriptive stats: means, sd, median
+	- group_by()
+	- summarise()
+- ggplot()
+	- grammar of graphics intro: data + layers/geoms/aesthetics
+	- histogram, bar chart, line chart, box plots
+	- faceting
+	- adding summary statistics by computing them as a separate table
+	- best practice for displaying categorical vs numerical data
+	- colour/linetype/size
+	- ggsave(), formats, png, pdf, svg, resolution, size of plot, aspect ratio
+	
