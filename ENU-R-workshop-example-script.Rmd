@@ -29,3 +29,38 @@ install.packages("pacman")  # the name of the package needs to be provided in qu
 # TODO: Michelle, will you put in code on how to install packages using pacman?
 ```
 
+# Data frames / tibbles
+
+We'll use the `starwars` tibble included in the {tidyverse} package to show how data frames / tibbles work.
+
+```{r}
+require(tidyverse)  # making sure that tidyverse is loaded
+
+starwars  # calling the name of a data frame will print it...
+print(starwars)  # ...the same as using print(df)
+```
+
+## Indexing / addressing values in data frames
+
+```{r}
+starwars[1, 4]  # this refers to the 1st row of the 4th column (which character does it refer to?)
+
+starwars[3, ]  # this refers to 3rd row, all columns
+starwars[, 6]  # this refers to all rows, column 6
+
+starwars[,]  # this is the same as simply calling starwars. Give it a try!
+
+
+starwars$height  # returns the 'height' column
+starwars[,2]  # returns the same, but as a tibble with a single column - subtle difference!
+starwars[,"height"]  # this also returns the 'height' column
+
+
+## You can do more complicated things using vector notation as well, e.g.:
+
+starwars[4:6, ]  # returns rows 4 to 6 and all columns
+
+starwars[4:6, c(1,2,5,6,8,9)]  # returns rows 4 to 6 and the columns specified in c(...)
+
+```
+
