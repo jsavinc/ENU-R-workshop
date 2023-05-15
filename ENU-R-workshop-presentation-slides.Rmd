@@ -48,3 +48,24 @@ The presentation should cover the following:
 	- colour/linetype/size
 	- ggsave(), formats, png, pdf, svg, resolution, size of plot, aspect ratio
 	
+
+Reference for slides (ioslides): https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html
+
+# Seting up project & folders
+
+## Start new project in R
+
+- File - New Project
+
+TODO: include a screenshot of the New Project window!
+
+## File paths: absolute vs. relative
+
+- Absolute paths specify the full 'address' of a file
+  - e.g. "C:/Users/123456/OneDrive - Edinburgh Napier University/training/WORKBOOK.xlsx"
+  - Helpful in some scenarios, e.g. when the data cannot be inside the project folder
+- Relative paths specify the address relative to a 'working directory'
+  - e.g. "./data/raw/WORKBOOK.xlsx"
+  - the dot ('.') means 'working directory'
+  - when using R projects, the working directory is the project folder
+  - two dots ('..') means 'move one directory up' - e.g. "../other project folder/data/raw_data.csv"
