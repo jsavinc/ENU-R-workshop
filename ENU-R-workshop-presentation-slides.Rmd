@@ -69,3 +69,43 @@ TODO: include a screenshot of the New Project window!
   - the dot ('.') means 'working directory'
   - when using R projects, the working directory is the project folder
   - two dots ('..') means 'move one directory up' - e.g. "../other project folder/data/raw_data.csv"
+  
+  
+# Data frames/tibbles
+
+- Data frames (or tibbles, in tidyverse) are like spreadsheets in R
+- Rectangular structure: rows X columns
+- Each column has a *type*:
+  - character (any text you like!)
+  - integer (integers, 0,1,2,3,...)
+  - numeric (e.g. decimal numbers)
+  - logical (TRUE/FALSE)
+  
+## Addressing / indexing values in data frames
+
+- Each entry in a data frame/tibble has an 'address' - its position in terms of rows and columns
+- You can refer to values in a data frame using an index in rectangular brackets:
+  - df[3,5] refers to the value in data frame *df* at row 3 and column 5
+- Columns have names, so you can also refer to a named column:
+  - df[2, "smoking status"] refers to 2nd row, column "smoking status"
+- Special case: you can leave out the row or column position, and it will get all rows or all columns
+  - df[6,] refers to row 6 and all columns
+  - df[,9] refers to all rows and column 9
+  - df[, ] refers to all of df (the same as calling df directly!)
+  
+## Dollar sign notation ($)
+
+- You can also refer to a column using the dollar sign ('$'):
+  - df$postcode refers to the 'postcode' column - note there's no quotes around the name in this case!
+  
+## Functions on data frames
+
+- running just the name of the data frame/tibble, e.g. `df` is the same as running `print(df)` and will show you the first 10 rows of the data
+- `summary(df)` runs some very basic descriptive statistics on all the columns
+- `glimpse(df)` (part of the *tidyverse* package) shows you all the columns and lists the first few values for each column
+
+## Saving data frames as files
+
+- To save a data frame as a file, you can use the following:
+  - `write_csv(df,  file = "path_to_file.csv")` saves the data frame as a .csv file
+  - `openxlsx::write.xlsx(df, "path_to_file.xlsx")` saves the data frame as an excel (.xlsx) file
