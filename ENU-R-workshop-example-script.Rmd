@@ -64,3 +64,38 @@ starwars[4:6, c(1,2,5,6,8,9)]  # returns rows 4 to 6 and the columns specified i
 
 ```
 
+# Reading excel files
+
+```{r}
+require(readxl)  # the readxl package is needed
+
+## in the below section we download an excel file to a temporary location
+
+sample_excel_file <- tempfile()
+
+download.file(
+  url = "https://www.nrscotland.gov.uk/files/statistics/population-estimates/mid-21/mid-year-pop-est-21-data.xlsx",
+  destfile = sample_excel_file,
+  mode = "wb")
+
+excel_sheets(path = sample_excel_file)  # show the names of the sheets/tabs in an excel file
+
+
+## the two lines below read from the same sheet - you can use the name or its number
+read_excel(path = sample_excel_file, sheet = 5)
+read_excel(path = sample_excel_file, sheet = "Table 2")
+
+## Ntoe how there's a lot of 'cruft' in the excel file because a lot of the
+## cells are devoted to formatting and describing the data
+
+## One approach to clean up the data would be to remove columns and rows that
+## don't contain substantial information; however, we can also specify a range
+## of cells to read from!
+read_excel(
+  path = sample_excel_file,
+  sheet = "Table 2",
+  range = "A5:G20",
+  col_names = TRUE
+)  # this reads from the 'rectangle' between A5 and G20, and also knows to treat the first row as column names
+```
+
