@@ -26,7 +26,19 @@ We start by installing the package `{pacman}` (package manager) the 'traditional
 ```{r}
 install.packages("pacman")  # the name of the package needs to be provided in quotes
 
-# TODO: Michelle, will you put in code on how to install packages using pacman?
+library("pacman") # Load pacman package
+# After running the previous lines of code, we can use the functions provided by the pacman package.
+
+p_load(ggplot2, dplyr, stringr) # Install & load packages
+# Note that the p_load function also checks whether a package is installed already. If the package is not installed yet, it is installed automatically by the pacman package.
+
+# The p_load function basically replaces the Base R library, install.packages, and require functions and allows installing and loading numerous packages simultaneously using much less R code.
+
+p_unload(ggplot2, dplyr, stringr)  # Unload packages
+# The following packages have been unloaded:ggplot2, dplyr, stringr
+
+p_update(update = FALSE) # Check for outdated packages
+
 ```
 
 # Data frames / tibbles
