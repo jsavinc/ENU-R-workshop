@@ -76,6 +76,25 @@ starwars[4:6, c(1,2,5,6,8,9)]  # returns rows 4 to 6 and the columns specified i
 
 ```
 
+
+## Reading & saving data frames
+
+```{r}
+require(tidyverse)
+
+## you can read from a file on your computer, or from the internet - in this
+## example we will read a file from the National Records Scotland website
+most_common_surnames_2022 <- read_csv(file = "https://www.nrscotland.gov.uk/files//statistics/common-surnames/most-com-surnames-bmd-registers-22.csv")
+most_common_surnames_2022  # print the first few lines of the data
+
+## this saves the starwars data frame as a CSV file (comma-separated values)
+## inside your current project directory
+starwars %>%
+  write_csv(file = "./starwars.csv")
+```
+
+
+
 # Reading excel files
 
 ```{r}
@@ -110,4 +129,51 @@ read_excel(
   col_names = TRUE
 )  # this reads from the 'rectangle' between A5 and G20, and also knows to treat the first row as column names
 ```
+
+
+# Data cleaning
+
+## {janitor} package examples
+
+For this we will use the excel file from above.
+
+```{r}
+# TODO: find a good example of a dataset that can be used with janitor nicely 
+# read_excel(path = sample_excel_file, sheet = 5)
+```
+
+## Renaming columns
+
+```{r}
+## using the tidyverse 'rename' function, we can specify which columns to rename
+starwars %>%
+  rename(height_in_cms = height, mass_in_kg = mass, skin_colour = skin_color)
+
+## you can use 'select' if you want to rename and select only a subset of the
+## columns
+starwars %>%
+  select(character_name = name, character_eye_colour = eye_color)
+
+## you can name columns using the "names" function and assigning values to it,
+## as well - this might look a bit strange because we are modifying the result
+## of a function
+names(starwars)  # this will print the column names
+
+small_starwars <- starwars %>% select(1:5)
+names(small_starwars) <- c("character_name", "character_height", "character_mass")  # we get a warning that the we did not name all of the columns
+small_starwars  # two of the columns now have missing names
+names(small_starwars) <- c("character_name", "character_height", "character_mass", "character_hair_colour", "character_eye_colour")
+small_starwars  # now all the columns have names
+
+## programmatically renaming columns - to do this, we need to use
+## 'rename_with()'. For example, we can remove the keyword "character" from the
+## names above
+small_starwars %>%
+  rename_with(~str_remove_all(string = .x, pattern = "character"))
+## what we actually want is to remove the underscore as well
+small_starwars %>%
+  rename_with(~str_remove_all(string = .x, pattern = "character_"))
+
+```
+
 

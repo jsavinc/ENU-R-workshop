@@ -170,6 +170,7 @@ The {janitor} package contains many helpful functions used in data cleaning:
 - `convert_to_date()` for converting from excel's quirky date format
 - `remove_constant()` will find columns that only contain the same entry throughout and remove them
 - `remove_empty_rows()`, `remove_empty_cols()`
+- `get_dupes()` for finding duplicate rows
 
 
 ## Naming conventions
@@ -191,8 +192,8 @@ The {janitor} package contains many helpful functions used in data cleaning:
 - aforementioned `janitor::clean_names()` - this takes existing names and 'cleans' them
 - {dplyr} has function `rename()`: e.g. `some_data %>% rename(new_variable_with_descriptive_name = NEWVAR12)` - you can pick individual columns to rename
   - you can rename them programmatically as well, e.g., replace all numbers with blank (equivalent to removing)
-  - `some_data %>% rename(~str_replace_all(string = .x, pattern = "\\d", replacement = ""))`
-  - `some_data %>% rename(~str_remove_all(string = .x, pattern = "\\d"))`
+  - `some_data %>% rename_with(~str_replace_all(string = .x, pattern = "\\d", replacement = ""))`
+  - `some_data %>% rename_with(~str_remove_all(string = .x, pattern = "\\d"))`
 - base R example:
   - `names(some_data) <- c("id_patient", "cat_group_asignment", "amt_heart_rate")`
   - the above fails if there aren't exactly 3 columns in the data!
@@ -200,3 +201,9 @@ The {janitor} package contains many helpful functions used in data cleaning:
 ## Missing values
 
 - R has an in-built marker for missing values, `NA`
+- missing values can be coded in various ways; e.g. NHS ethnicity data contains codes for 'Refused', 'Not known', or the data may be actually missing.
+  - when cleaning data, we usually want to convert them all to R's `NA`
+  - `if_else(condition = age_var == 999, true = NA_integer_, false = age_var)`
+  - `if_else(condition = eth_var %in% c("Refused", "Not known"), true = NA_character_, false = eth_var)`
+- conversely, sometimes you want to make missing values a separate category, e.g. `replace_na(replace = "Missing data")`
+
