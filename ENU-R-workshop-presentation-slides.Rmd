@@ -52,15 +52,17 @@ The presentation should cover the following:
 
 Reference for slides (ioslides): <https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html>
 
+
 # Seting up project & folders
 
 ## Start new project in R
 
 -   File - New Project
 
-TODO: include a screenshot of the New Project window!
+![New project prompt in RStudio](http://www.rstudio.com/images/docs/projects_new.png)
 
-## File paths: absolute vs. relative
+
+## Brief aside: absolute vs. relative file paths
 
 -   Absolute paths specify the full 'address' of a file
     -   e.g. "C:/Users/123456/OneDrive - Edinburgh Napier University/training/WORKBOOK.xlsx"
@@ -70,6 +72,20 @@ TODO: include a screenshot of the New Project window!
     -   the dot ('.') means 'working directory'
     -   when using R projects, the working directory is the project folder
     -   two dots ('..') means 'move one directory up' - e.g. "../other project folder/data/raw_data.csv"
+
+
+## Project skeleton
+
+It's good practice to structure your project folders in a way that makes things easier to find, e.g.:
+
+- raw data
+- scripts
+- clean data
+- figures
+- models
+
+The best layout will vary from project to project, but a bit of preparation ahead of time can save you trouble later on!
+
 
 # Data frames/tibbles
 
@@ -125,3 +141,62 @@ TODO: include a screenshot of the New Project window!
 - `read_excel()` will read a specific sheet/tab from an excel file (you need to specify the name or the number of the sheet!)
   - e.g. `read_excel(path = "my_excel_file.xlsx", sheet = 2)` will read the 2nd tab in the file
 - Read specific cell range in sheet: `read_excel(path = "my_excel_file.xlsx", sheet = 2, range = "A5:G24")`
+
+
+# Data cleaning
+
+## Data cleaning
+
+- Real world data are messy, often data are collected without a clear idea of how they will be analysed, so a lot of processing is needed
+- Pareto principle: 80% of effort goes into data cleaning, 80% of the effort of data cleaning is spent on 20% of data, etc.
+- Often, you'll need to make arbitrary decisions, especially when dealing with near-duplicate entries
+  - i.e. do you keep the first entry, the last entry?
+  - often there's no 'correct' way to proceed with cleaning, so make sure you justify and document your decisions - transparency!
+
+
+## Never modify raw data!
+
+- Keep raw data untouched (preferably save a separate copy elsewhere as backup)
+- With R it's easy to document all steps of data cleaning
+- Load raw data, process it, and save a new, clean file
+  - Sometimes it's useful to keep intermediate files as well
+
+
+## {janitor} package
+
+The {janitor} package contains many helpful functions used in data cleaning:
+
+- `clean_names()` makes consistent variable names: from `"Treatment  assignment (BRIEF)"` to `"treatment_assignment_brief"`
+- `convert_to_date()` for converting from excel's quirky date format
+- `remove_constant()` will find columns that only contain the same entry throughout and remove them
+- `remove_empty_rows()`, `remove_empty_cols()`
+
+
+## Naming conventions
+
+- as with other standards, there are many!
+- consistency is key
+- use descriptive names, length is not a problem (e.g. avoid cryptic names like `NEWVAR12`)
+- variable names can use spaces but that makes your life a little more difficult
+- recommended reading: [Column Names as Contracts](https://emilyriederer.netlify.app/post/column-name-contracts/)
+- suggestions: 
+  - include type of variable (e.g. 'val', 'amt', 'cat', 'bin', etc.)
+  - lower-case names separated by underscores
+  - e.g. `id_participant`, `amt_age_at_census`, `cat_age_of_child`, `bin_treatment_group`
+
+
+## Renaming columns in R
+
+- Common theme in R: there's about 10 different ways of doing anything
+- aforementioned `janitor::clean_names()` - this takes existing names and 'cleans' them
+- {dplyr} has function `rename()`: e.g. `some_data %>% rename(new_variable_with_descriptive_name = NEWVAR12)` - you can pick individual columns to rename
+  - you can rename them programmatically as well, e.g., replace all numbers with blank (equivalent to removing)
+  - `some_data %>% rename(~str_replace_all(string = .x, pattern = "\\d", replacement = ""))`
+  - `some_data %>% rename(~str_remove_all(string = .x, pattern = "\\d"))`
+- base R example:
+  - `names(some_data) <- c("id_patient", "cat_group_asignment", "amt_heart_rate")`
+  - the above fails if there aren't exactly 3 columns in the data!
+  
+## Missing values
+
+- R has an in-built marker for missing values, `NA`
