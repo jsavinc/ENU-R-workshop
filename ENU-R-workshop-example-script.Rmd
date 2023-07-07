@@ -138,6 +138,7 @@ read_excel(
 For this we will use the excel file from above.
 
 ```{r}
+require(janitor)
 # TODO: find a good example of a dataset that can be used with janitor nicely 
 # read_excel(path = sample_excel_file, sheet = 5)
 ```
@@ -145,6 +146,7 @@ For this we will use the excel file from above.
 ## Renaming columns
 
 ```{r}
+require(tidyverse)
 ## using the tidyverse 'rename' function, we can specify which columns to rename
 starwars %>%
   rename(height_in_cms = height, mass_in_kg = mass, skin_colour = skin_color)
@@ -176,4 +178,91 @@ small_starwars %>%
 
 ```
 
+
+## Dealing with missing values
+
+```{r}
+## R's built-in missing value marker, NA
+NA
+## you can check whether something is a missing value using is.na()
+is.na(NA)
+is.na("NA")  # note that NA is written without quotes; with quotes, it's considered a piece of text containing "NA"
+
+## NA is also different from NULL, which is used in other programming languages
+is.na(NULL)
+
+## NA comes in different types, corresponding to R's variable types: integer,
+## numeric/real, character, logical; be aware of these as sometimes you may run
+## into errors where you try to replace a numeric value with a NA, but R will
+## complain the type of NA you used doesn't match the rest of the values
+NA_integer_
+NA_real_  # real as in real numbers
+NA_character_
+NA  # this is the logical type
+
+
+## you can show rows with missing values on a particular column:
+starwars %>%
+  filter(is.na(hair_color))
+
+## or you can remove rows with missing values
+starwars %>%
+  drop_na(hair_color)
+## the below is equivalent to drop_na(): the exclamation mark (!) means to take
+## the opposite of is.na(), keeping only rows where is.na() is FALSE, i.e. where
+## values are not missing
+starwars %>%
+  filter(!is.na(hair_color))
+
+## replacing coded missing values with R's NA: the most commonly used function
+## for this is if_else() - you specify under which conditions values of a
+## particular column or vector should be changed to something else
+
+if_else(  # LETTERS is the upper case letters of the English alphabet
+  condition = LETTERS %in% c("C","F","H","L","O","Q"),  # if they are in the provided list...
+  true = NA_character_,  # return a NA value, otherwise...
+  false = LETTERS  # return the original letters
+)
+
+
+starwars %>%
+  mutate(
+    ## replace hair colour with NA where it says "none"
+    height = if_else(
+      condition = hair_color == "none",
+      true = NA_character_,  # character type to correspond with type of hair_color
+      false = height
+      )
+  )
+
+starwars %>%
+  mutate(
+    ## replace height with NA where it's greater than 180
+    height = if_else(
+      condition = height > 180,
+      true = NA_integer_,  # integer type to correspond with type of height
+      false = height
+      )
+  )
+
+
+## sometimes you'll need to do the opposite task: replace NA values with
+## something else. the {tidyr} package that's part of the tidyverse includes a
+## function for that, replace_na():
+starwars %>%
+  mutate(
+    hair_color = replace_na(hair_color, replace = "missing")
+  )
+
+## you can do the same using if_else
+starwars %>%
+  mutate(
+    hair_color = if_else(
+      condition = is.na(hair_color),
+      true = "missing",
+      false = hair_color
+    )
+  )
+
+```
 

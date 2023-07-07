@@ -202,8 +202,9 @@ The {janitor} package contains many helpful functions used in data cleaning:
 
 - R has an in-built marker for missing values, `NA`
 - missing values can be coded in various ways; e.g. NHS ethnicity data contains codes for 'Refused', 'Not known', or the data may be actually missing.
-  - when cleaning data, we usually want to convert them all to R's `NA`
+  - when cleaning data, we usually want to convert all missing values to R's `NA`
   - `if_else(condition = age_var == 999, true = NA_integer_, false = age_var)`
   - `if_else(condition = eth_var %in% c("Refused", "Not known"), true = NA_character_, false = eth_var)`
 - conversely, sometimes you want to make missing values a separate category, e.g. `replace_na(replace = "Missing data")`
+- careful: when loading data, R may assume the text "NA" means it's a missing value
 
